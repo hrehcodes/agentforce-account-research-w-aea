@@ -640,17 +640,6 @@
         <isOutput>true</isOutput>
     </variables>
     <variables>
-        <description>This is the API key used to authenticate to Perplexity API.</description>
-        <name>Perplexity_API_Key</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <value>
-            <stringValue>REPLACE_WITH_PERPLEXITY_API_KEY</stringValue>
-        </value>
-    </variables>
-    <variables>
         <description>This is the full JSON response from the Perplexity API call about competitive positioning and market landscape.</description>
         <name>response_Competitive_Positioning_Landscape</name>
         <dataType>String</dataType>

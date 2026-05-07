@@ -66,7 +66,7 @@ Invocable methods and key callouts:
 - None retrieved.
 
 No credential secret values were included in the retrieved metadata. Any API keys or named-principal secrets must be configured in the target org after deployment.
-- The retrieved package contained a hardcoded Perplexity flow variable value; this repo replaces it with `REPLACE_WITH_PERPLEXITY_API_KEY` before publishing.
+- The retrieved package contained a hardcoded Perplexity flow variable value; the Flow variable has been removed and credentials are now handled through External Credential setup.
 
 ## Prerequisites
 - Salesforce org with Metadata API support and Salesforce CLI access.
@@ -112,3 +112,26 @@ sf project deploy start --manifest manifest/package.xml --target-org <target-org
 - Keep generated secrets, local org auth files, `.sf`, `.sfdx`, and deployment output out of source control.
 - Treat prompt templates and Agentforce action descriptions as production behavior, not just documentation.
 - For production hardening, prefer Named Credential and External Credential patterns over passing API keys directly through Flow variables.
+
+## Hardening Update
+Security and reliability improvements applied after migration:
+- Removed the Perplexity API-key placeholder variable from the AEA research Flow.
+- Added deployable runtime permission metadata for classes, flows, and report object access.
+- The web-research topic instructions were narrowed to reduce overbroad routing.
+
+## Known Limitations
+- Employee Agent / EmployeeCopilot web-search availability must be confirmed in the target org.
+- Flow fault handling should still be reviewed in Flow Builder before production use.
+
+## Test Commands
+Validate metadata and run relevant tests after authenticating to a target org:
+
+```bash
+sf project deploy start --dry-run --manifest manifest/package.xml --target-org <target-org> --wait 30
+sf apex run test --class-names AEA_Account_Research_Hardening_Test --target-org <target-org> --result-format human --wait 10
+```
+
+## Troubleshooting
+- If an Agentforce action cannot authenticate, confirm the named principal secret is configured in the target org and the running user has the included permission set.
+- If a prompt action returns unsupported or unsafe content, review the prompt template safety rules and test with malicious retrieved content.
+- If deployment fails on Agentforce metadata, deploy supporting objects, Apex, Flows, credentials, and prompt templates first, then wire/publish the target agent in Builder.
